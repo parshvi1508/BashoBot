@@ -1,4 +1,4 @@
-# 🍃BashBot: AI based Haiku Generator
+# 🍃BashoBot: AI based Haiku Generator
 
 Haiku Forge is an innovative Streamlit application that leverages AI to generate beautiful, traditional haikus on any topic you can imagine. Using the powerful Groq API with Llama 3, this web-app transforms your inspirations into delicate, structured poetry.
 
@@ -23,10 +23,3 @@ Haiku Forge is an innovative Streamlit application that leverages AI to generate
 - Groq API Key
 - Supabase Project
 
-## 🔧 Installation
-
-1. Clone the repository
-```bash
-git clone https://github.com/your-username/haiku-forge.git
-cd haiku-forge
-```
