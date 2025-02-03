@@ -16,126 +16,143 @@ groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 st.markdown("""
 <style>
     :root {
-        
-        --bg-primary: #0f2027;
-        --bg-secondary: #203a4b;
-        --text-primary: #ffffff;
-        --accent-1: #6a11cb;
-        --accent-2: #2575fc;
-        --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        --gradient-2: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-        --gradient-3: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%);
+        --bg-primary: #121212;
+        --bg-secondary: #1e1e2a;
+        --text-primary: #e0e0e0;
+        --accent-primary: #6a5acd;
+        --accent-secondary: #4169e1;
+        --accent-tertiary: #20b2aa;
+
+        --gradient-primary: linear-gradient(135deg, #8a2be2, #4169e1);
+        --gradient-secondary: linear-gradient(135deg, #20b2aa, #2e8b57);
+        --gradient-accent: linear-gradient(135deg, #ff6b6b, #feca57);
+    }
+
+    body {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     .stApp {
-        background: linear-gradient(135deg, 
-            rgba(15, 32, 39, 0.9), 
-            rgba(32, 58, 67, 0.9), 
-            rgba(44, 83, 100, 0.9)
+        background: linear-gradient(145deg, 
+            rgba(18, 18, 18, 0.95), 
+            rgba(30, 30, 42, 0.95)
         );
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
     }
 
-
     .animated-title {
-        background: linear-gradient(to right, #6a11cb, #2575fc, #43e97b);
-        background-size: 200% auto;
+        background: var(--gradient-primary);
+        background-size: 300% auto;
         color: transparent;
         -webkit-background-clip: text;
         background-clip: text;
-        animation: shine 3s linear infinite;
+        animation: shine 4s ease infinite;
+        text-shadow: 0 4px 15px rgba(106, 90, 205, 0.4);
     }
 
     @keyframes shine {
-        to {
-            background-position: 200% center;
-        }
+        0% { background-position: 0% center; }
+        50% { background-position: 200% center; }
+        100% { background-position: 0% center; }
     }
 
     .haiku-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 
+            0 15px 35px rgba(0, 0, 0, 0.2),
+            0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         position: relative;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 16px;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.125);
         overflow: hidden;
-        transition: all 0.3s ease;
-        transform-style: preserve-3d;
-    }
-
-    .haiku-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 5px;
-        background: var(--gradient-1);
-        transform: scaleX(0);
-        transform-origin: right;
-        transition: transform 0.3s ease;
     }
 
     .haiku-card:hover {
-        transform: scale(1.03) translateZ(20px);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        transform: scale(1.05) translateY(-10px);
+        box-shadow: 
+            0 25px 50px rgba(0, 0, 0, 0.3),
+            0 10px 20px rgba(0, 0, 0, 0.2);
     }
 
-    .haiku-card:hover::before {
-        transform: scaleX(1);
-        transform-origin: left;
-    }
-
-    
     .topic-badge {
         display: inline-block;
-        padding: 5px 10px;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: bold;
+        padding: 8px 15px;
+        border-radius: 25px;
+        font-size: 0.9rem;
+        font-weight: 600;
         text-transform: uppercase;
-        margin-bottom: 10px;
-        background: var(--gradient-2);
+        background: var(--gradient-secondary);
         color: white;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        transition: transform 0.2s ease;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
     }
 
     .topic-badge:hover {
-        transform: scale(1.05) rotate(3deg);
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 6px 12px rgba(32, 178, 170, 0.3);
     }
 
-    
     .stTextInput>div>div>input {
-        background: rgba(255, 255, 255, 0.2) !important;
-        border-radius: 15px !important;
-        border: 2px solid rgba(255, 255, 255, 0.1) !important;
-        color: white !important;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border: 2px solid var(--accent-primary) !important;
+        color: var(--text-primary) !important;
+        border-radius: 20px !important;
         transition: all 0.3s ease !important;
+    }
+
+    .stTextInput>div>div>input:focus {
+        border-color: var(--accent-secondary) !important;
+        box-shadow: 0 0 15px rgba(65, 105, 225, 0.3) !important;
     }
 
     .stButton>button {
-        background: var(--gradient-3) !important;
-        border-radius: 15px !important;
-        box-shadow: 0 6px 15px rgba(0,0,0,0.2) !important;
-        transition: all 0.3s ease !important;
+        background: var(--gradient-accent) !important;
+        border-radius: 25px !important;
+        color: white !important;
+        font-weight: bold !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
     }
 
     .stButton>button:hover {
-        transform: translateY(-4px) rotate(2deg) !important;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.3) !important;
+        transform: translateY(-5px) scale(1.05) !important;
+        box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3) !important;
     }
+
+    @media (max-width: 768px) {
+        .animated-title {
+            font-size: 2.5rem !important;
+        }
+        
+        .haiku-card {
+            margin-bottom: 15px !important;
+        }
+    }
+    @media (max-width: 768px) {
+    .animated-title {
+        font-size: 2.5rem !important;
+    }
+    
+    .haiku-card {
+        margin-bottom: 15px !important;
+    }
+}
 </style>
 """, unsafe_allow_html=True)
 
 TOPIC_COLORS = [
-    "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)",   # Purple to Blue
-    "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",   # Green to Cyan
-    "linear-gradient(135deg, #ff6a00 0%, #ee0979 100%)",   # Orange to Pink
-    "linear-gradient(135deg, #8a2387 0%, #e94057 100%)",   # Deep Purple to Red
-    "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)"    # Teal to Green
+    "linear-gradient(135deg, #8a2be2 0%, #4169e1 100%)",   # Blueviolet to Royal Blue
+    "linear-gradient(135deg, #20b2aa 0%, #2e8b57 100%)",   # Light Sea Green to Sea Green
+    "linear-gradient(135deg, #ff6b6b 0%, #feca57 100%)",   # Soft Red to Bright Yellow
+    "linear-gradient(135deg, #8e44ad 0%, #e74c3c 100%)",   # Deep Purple to Vibrant Red
+    "linear-gradient(135deg, #3498db 0%, #2ecc71 100%)"    # Bright Blue to Emerald Green
+
 ]
 
 def generate_haiku(topic):
@@ -166,8 +183,8 @@ def generate_haiku(topic):
 def main():
     st.markdown('''
         <div style="text-align: center; margin-bottom: 30px;">
-            <h1 class="animated-title" style="font-size: 3.5rem; letter-spacing: -2px;">
-                🍃Bashobot: Haiku Forge 🍃
+            <h1 class="animated-title" style="font-size: 3rem; letter-spacing: -2px;">
+                🍃BashoBot: Haiku Forge🍃
             </h1>
             <p style="color: rgba(255,255,255,0.7); margin-top: -10px; font-size: 1.2rem;">
                 Weave Poetry with AI Whispers
