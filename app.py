@@ -29,18 +29,19 @@ st.markdown("""
     }
 
     body {
-        background-color: var(--bg-primary);
+        
         color: var(--text-primary);
         font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     .stApp {
-        background: linear-gradient(145deg, 
-            rgba(18, 18, 18, 0.95), 
-            rgba(30, 30, 42, 0.95)
-        );
-        backdrop-filter: blur(25px);
-        -webkit-backdrop-filter: blur(25px);
+        background: linear-gradient(135deg, 
+        rgba(15, 32, 39, 0.9), 
+        rgba(32, 58, 67, 0.9), 
+        rgba(44, 83, 100, 0.9)
+    );
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     }
 
     .animated-title {
